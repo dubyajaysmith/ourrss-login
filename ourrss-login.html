@@ -1,0 +1,359 @@
+<!-- human.txt += Jamie Smith, i@jamiesmiths.com -->
+<dom-module id="ourrss-login">
+	<template>
+		
+		<style>
+			
+			.dark-primary-color {
+				background: #0288D1;
+			}
+			.default-primary-color {
+				background: #03A9F4;
+			}
+			.light-primary-color {
+				background: #B3E5FC;
+			}
+			
+			:host {
+				font-family:Ubuntu;
+				user-select: none;
+				width:100%;
+				height:100%;
+			}
+			:host label {
+				font-size:1rem;
+			}
+			
+			:host #card {
+				-webkit-transition: all 0.5s ease-in-out;
+				-moz-transition: all 0.5s ease-in-out;
+				-o-transition: all 0.5s ease-in-out;
+				transition: all 0.5s ease-in-out;
+				background-color: #FFF;
+				color: #212121;
+				font-size: 150%;
+				max-width: 30rem;
+				padding: 1rem;
+				display: table;
+				margin: 0 auto;
+				text-align:center;
+				height:10rem;
+				border-radius: 50%;
+				box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+			}
+			:host #card:hover {
+				box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4), 0 6.5px 27px 0 rgba(0, 0, 0, 0.38);
+			}
+			:host #card.expand {
+				border-radius:0%;
+				padding: 1rem 0rem 1rem 0rem;
+				width:100%;
+			}
+			
+			
+			:host #ourIcon {
+				-webkit-transition: all 0.5s ease-in-out;
+				-moz-transition: all 0.5s ease-in-out;
+				-o-transition: all 0.5s ease-in-out;
+				display: table;
+				margin: 0 auto;
+				width: auto;
+				max-height: 10rem;
+				border-radius:50%;
+				box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+			}
+			:host .shrinkImage {
+				-webkit-transform: scale(.5);
+				-ms-transform: scale(.5);
+				transform: scale(.5);
+				box-shadow:initial;
+				
+			}
+			
+			:host .form {
+				
+				display: table;
+				margin: 0 auto;
+			    display: table;
+			    margin: 0 auto;
+				animation: fadeIn .5s ease-in 1;
+				opacity: 1;
+				-webkit-transition: all 0.5s ease-in-out;
+				-moz-transition: all 0.5s ease-in-out;
+				-o-transition: all 0.5s ease-in-out;
+				transition: all 0.5s ease-in-out;
+			}
+			:host .hideForm {
+				display: none;
+				animation: fadeOut .1s ease-in 0;
+				opacity: 0;
+			}
+			
+			
+			:host input {
+				padding: 1rem;
+				border-color: #0288D1;
+			}
+			:host input:focus {
+				border-color: #B3E5FC;
+				
+			}
+			
+			
+			:host .button {
+				color: #FFF;
+				display: table;
+				margin: 0 auto;
+			}
+			:host .button:link {
+				width: 7rem;
+				padding: 1rem;
+				line-height: 2rem;
+				text-decoration: none;
+				color: #FFF;
+			}
+			:host .button:visited {
+				text-decoration: none;
+			}
+			:host .button:hover {
+				background-color: #03A9F4;
+			}
+			:host .button:active {
+				-webkit-transform: scale(1.5);
+				-ms-transform: scale(1.5);
+				transform: scale(1.5);
+			}
+			
+			
+			
+			:host .grid-box {
+				display: grid;
+				grid-gap: 1rem;
+			    padding: 1rem 1rem 6.5rem 1rem;
+				grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+			}
+			:host .grid-box:after {
+				content: "";
+				display: table;
+				clear: both;
+			}
+			:host [class*='col-'] {
+				float: left;
+			}
+			:host .col-1-2 {
+				width: 33.333%;
+			}
+			:host .col-2-2 {
+				width: 33.333%;
+			}
+			:host .col-2-3 {
+				width: 33.333%;
+			}
+			
+			:host .container {
+				width:100%;
+			}
+			
+		</style>
+		
+		<!--<div id="gridBox" class="grid-box center">-->
+			<div class="container">
+				<div id="card" >
+					<img id="ourIcon" src="icon.png" />
+					
+					<div class="container">
+						<div class="form hideForm">
+							<a id="logout" href="#!" style="float:right; margin-top:-160px; margin-right:-106px; font-size:medium; text-decoration:none;">
+								logout
+							</a>
+							<h5>Login</h5>
+							<div class="grid-box">
+								<input id="email" type="email" placeholder="email" />
+								<input id="password" type="password" placeholder="Password" />
+								<div class="container">
+								<a id="login" href="#!" class="button light-primary-color">Login</a>
+								<br /><br />
+								<label for="signup">No haz creds? Get creds!</label>
+								<a id="signup" href="#!" class="button light-primary-color">Sign Up</a>
+							</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		<!--</div>-->
+	</template>
+	
+	
+	
+	
+	<script src="//www.gstatic.com/firebasejs/3.7.5/firebase.js"></script>
+	
+	<script>
+		/*global HTMLElement navigator localStorage MediaMetadata firebase */
+		class OurrssLogin extends HTMLElement {
+			
+			init() {
+				this.registerElements()
+			}
+			
+			setProperties(){
+				this.is = 'ourrss-login'
+				this.log = (msg) => msg ? console.log(msg) : ''
+				this.dump = (msg) => msg ? console.dir(msg) : console.dir(this)
+				this.error = (msg) => console.error(this.is, ' ', msg)
+				this.prom = (fn) => {
+					const promise = new Promise((resolve, reject) => {
+						fn()
+					})
+					return promise;
+				}
+				this.cancelBubble = () => {
+					if (!e) var e = window.event;
+					e.cancelBubble = true;
+				}
+			}
+			
+			// Fires when an instance was removed from the document.
+			detachedCallback() {
+				this.log('instance was removed.')
+			}
+		
+			// Fires when an attribute was added, removed, or updated.
+			attributeChangedCallback(attr, oldVal, newVal) {
+				
+				if(newVal){
+					this.log('-attr: ' + attr + '\n-oldVal: ' +  oldVal + ' \n-newVal: ' +  newVal)
+					'firebase' == attr ? this.firebase = newVal: ''
+					//'src' == attr ? this.dom.audio.src = newVal : ''
+					this.log('LOGIN HAS ATTR')
+					//this.dump(this.firebase)
+				}
+			}
+			
+			// Fires when an instance was inserted into the document.
+			attachedCallback() {
+				
+				var template = this.owner.querySelector('template')
+				var clone = document.importNode(template.content, true)
+				this.root = this.createShadowRoot()
+				this.root.appendChild(clone)
+				this.init()
+				
+			}
+		
+			
+			// Fires when an instance of the element is created.
+			createdCallback() {
+				this.setProperties()
+				this.parseAttributes()
+				
+				//console.log('instance was created.')
+			}
+			
+			parseAttributes() {
+				
+				this.getAttribute('firebase') ? this.firebase = this.getAttribute('firebase') : ''
+
+				//this.something = parseInt(this.getAttribute('something'));
+			}
+			
+			registerElements() {
+				
+				this.dom = {}
+				this.dom.gridBox = this.root.children.gridBox
+				this.dom.card = this.root.getElementById('card')
+				this.dom.login = this.root.getElementById('login')
+				this.dom.email = this.root.getElementById('email')
+				this.dom.icon = this.root.getElementById('ourIcon')
+				this.dom.signup = this.root.getElementById('signup')
+				this.dom.password = this.root.getElementById('password')
+				this.dom.logout = this.root.getElementById('logout')
+				
+				this.dom.form = this.root.querySelector('.form')
+				
+				//console.log('login;registerElements ')
+				//console.dir(this.dom.form)
+				
+				this.addListeners()
+				
+			}
+			
+			addListeners(){
+				
+					
+				this.dom.icon.onclick = () => {
+					//this.cancelBubble()
+					console.dir(this)
+					
+					//todo maybe give img   border: 6pt solid #0288D1;     "accent-color";
+					
+					this.dom.card.classList.contains('expand') ? this.dom.card.classList.remove('expand') : this.dom.card.classList.add('expand')
+					
+					this.dom.icon.classList.contains('shrinkImage') ? this.dom.icon.classList.remove('shrinkImage') : this.dom.icon.classList.add('shrinkImage')
+
+					this.dom.form.classList.contains('hideForm') ? this.dom.form.classList.remove('hideForm') : this.dom.form.classList.add('hideForm')
+					
+				}
+
+				this.dom.signup.onclick = function(e){
+					//this.cancelBubble()
+					console.log('SignAnch click')
+					console.dir(this)
+					firebase.auth().createUserWithEmailAndPassword(this.dom.email.value, this.dom.password.value)
+					    .catch(function(error) {
+					  // Handle Errors here.
+					  var errorCode = error.code;
+					  var errorMessage = error.message;
+					  if (errorCode == 'auth/weak-password') {
+					    alert('The password is too weak.');
+					  } else {
+					    alert(errorMessage);
+					  }
+					  console.log(error);
+					});
+				}
+				
+				this.dom.login.onclick = (e) => {
+					//this.cancelBubble()
+					
+					console.log('logAnch click')
+					console.dir(this)
+					
+					console.log('log check ', this.dom.email.value)
+					console.log('log check ', this.dom.password.value)
+
+					firebase.auth().signInWithEmailAndPassword(
+						String(this.dom.email.value)
+						,String(this.dom.password.value)
+					);
+					
+				}
+				
+				this.dom.logout.addEventListener('click', (e) => {
+					console.log('logging Out')
+					firebase.auth().signOut().then(() => {
+						console.log('Sign-out successful.')
+					}).catch((error) => {
+						console.log('An error happened.')
+					});
+				})
+				
+				this.ready()
+			}
+			
+			ready(){
+				
+				
+			}
+			
+		}
+		
+		if (document.createElement('ourrss-login').constructor !== OurrssLogin) {
+			OurrssLogin.prototype.owner = (document._currentScript || document.currentScript).ownerDocument;
+			document.registerElement('ourrss-login', OurrssLogin);
+		}
+	</script>
+	
+
+</dom-module>
